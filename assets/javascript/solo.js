@@ -80,7 +80,7 @@ $(document).ready(function() {
 	-------------------------------------*/
 
 	$('#start').on('click', function(){
-    pc_place_ship();
+    pc_setup();
 
 		for(var i=1; i< 6; i++){
 			shipId = 'ship'+i;
@@ -98,6 +98,7 @@ $(document).ready(function() {
 		$('.board .opponent').css('opacity', 1);
 
 		$('.screen.player').show();
+		// console.log(myShip);
 	});
 
 	/*-------------------------------------
@@ -131,5 +132,148 @@ $(document).ready(function() {
 		}
 	}
 
+	/*-------------------------------------
+	| pc place ship
+	-------------------------------------*/
+
+	function pc_setup(){
+		generate_ship(2);
+		generate_ship(3);
+		generate_ship(3);
+		generate_ship(4);
+		generate_ship(5);
+		check_repeat();
+	}
+
+	function generate_ship(ship_length){
+		var ship_head = '';
+		var headX;
+		var headY;
+		var this_ship = [];
+
+		start_from();
+		function start_from(){
+				headX = Math.floor(Math.random()*10);
+				headY = Math.floor(Math.random()*10);
+				ship_head = xAxis[headX] + yAxis[headY];
+				// console.log(ship_head);
+
+				head_to();
+		}
+
+		function head_to(){
+			var d = Math.floor(Math.random()*2);
+
+			/* horizontal -------------------------------*/
+			if(d ===0){
+				var tailX = headX + ship_length;
+
+				if(tailX > 9){
+					start_from();
+				} else {
+					for(var j=0; j<ship_length; j++){
+						var bodyX = headX +j;
+						var bodyY = headY;
+						var ship_body = xAxis[bodyX] + yAxis[bodyY];
+						this_ship.push(ship_body);
+					}
+				}
+			}
+			/* else d ===1, vertical -------------------------------*/
+			else {
+				var tailY = headY + ship_length;
+
+				if(tailY > 9){
+					start_from();
+				} else {
+					for(var j=0; j<ship_length; j++){
+						var bodyY = headY +j;
+						var bodyX = headX;
+						var ship_body = xAxis[bodyX] + yAxis[bodyY];
+						this_ship.push(ship_body);
+					}
+				}
+			}
+		}
+
+		for(var k=0; k<ship_length; k++){
+			pcShip.push(this_ship[k]);
+		}
+	}
+
+	function check_repeat(){
+		for (var i=0; i<pcShip.length; i++){
+			for(var j=0; j<pcShip.length; j++){
+				if((pcShip[i] === pcShip[j]) && (i!==j)){
+					pcShip = [];
+					pc_setup();
+					return
+				}
+			}
+		}
+		// console.log(pcShip);
+		// for(var i=0; i<pcShip.length; i++){
+		// 	$('#op'+ pcShip[i]).append('<img style="opacity:.5" src="./assets/images/hit.png">');
+		// }
+	}
+
+	/*-------------------------------------
+	| guess in turns
+	-------------------------------------*/
+
+	var hitSrc = './assets/images/hit.png';
+	var missSrc = './assets/images/miss.png';
+
+	$('.board .opponent .block').on('click', function(){
+
+		var blockIndex = $(this).attr('index');
+		var check = pcShip.indexOf(blockIndex);
+
+		if(check !== -1){
+			$('#op'+ blockIndex).find('img').attr('src', hitSrc);
+		} else {
+			$('#op'+ blockIndex).find('img').attr('src', missSrc);
+		}
+
+		pc_guess_easy();
+	});
+
+	/*-------------------------------------
+	| computer guess
+	-------------------------------------*/
+
+	var pc_guessed = [];
+	var pc_guess = '';
+
+	function pc_guess_easy(pcX, pcY){
+		var pcX = Math.floor(Math.random()*10);
+		var pcY = Math.floor(Math.random()*10);
+		pc_guess = xAxis[pcX] + yAxis[pcY];
+
+		console.log(pc_guess);
+		if_guessed(pc_guess);
+	}
+
+	function if_guessed(pc_guess){
+		var index = pc_guessed.indexOf(pc_guess);
+		if(index !==-1){
+			pc_guess_easy();
+		} else {
+			pc_guessed.push(pc_guess);
+			check_hit(pc_guess);
+			return
+		}
+	}
+
+	function check_hit(pc_guess){
+		var index = myShip.indexOf(pc_guess);
+		console.log(index);
+		if(index == -1){
+			$('#'+ pc_guess).find('img').attr('src', missSrc);
+			console.log('miss');
+		} else {
+			$('#'+ pc_guess).find('img').attr('src', hitSrc);
+		}
+	}
 
 });
