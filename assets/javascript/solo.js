@@ -106,7 +106,7 @@ $(document).ready(function() {
 		$('.screen.player').show();
 
 		$('#notification').html('[ Your Turn ]');
-		console.log(myShip);
+
 	});
 
 	/*-------------------------------------
@@ -244,12 +244,13 @@ $(document).ready(function() {
 				$('#op'+ blockIndex).find('img').attr('src', hitSrc);
 				$('#notification').html('[ Watch Out! ]');
 				myWin++;
-				win_loss();
+
 			} else {
 				$('#op'+ blockIndex).find('img').attr('src', missSrc);
 			}
 
 			$('#notification').html('[ Your Turn ]');
+			win_loss();
 			pc_guess();
 		}
 	});
@@ -335,13 +336,13 @@ $(document).ready(function() {
 				generate_guess();
 			} else {
 				pcGuessed.push(pcGuess);
-				console.log(pcGuessed);
+
 				hit_miss(pcGuess);
 			}
 		}
 
 		function hit_miss(pcGuess){
-			console.log('random check');
+
 			var index = myShip.indexOf(pcGuess);
 
 			if(index === -1){
@@ -434,7 +435,7 @@ $(document).ready(function() {
 		}
 
 		function hit_miss(){
-			console.log('around check');
+
 			var index = myShip.indexOf(pcGuess);
 
 			if(index === -1){
@@ -499,7 +500,7 @@ $(document).ready(function() {
 		}
 
 		function hit_miss(){
-			console.log('next check');
+
 			var index = myShip.indexOf(pcGuess);
 
 			if(index === -1){
