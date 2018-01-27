@@ -9,19 +9,23 @@ $(document).ready(function() {
 
 	// var database = firebase.database();
 
-	$('.screen img').detach();
-
   var myShip =[];
 	var pcShip =[];
+	var myGuess =[];
 
 	reset_game();
 	function reset_game(){
 		$('.guess').detach();
+		$('.screen img').detach();
 		$('.screen.player').hide();
 		$('.screen.opponent').show();
 
 		$('.board .player').css('opacity', 1);
 		$('.board .opponent').css('opacity', .5);
+
+		myShip =[];
+		pcShip =[];
+		myGuess =[];
 	}
 
 	/*-------------------------------------
@@ -225,17 +229,21 @@ $(document).ready(function() {
 	var missSrc = './assets/images/miss.png';
 
 	$('.board .opponent .block').on('click', function(){
-
 		var blockIndex = $(this).attr('index');
 		var check = pcShip.indexOf(blockIndex);
+		var guessed = myGuess.indexOf(blockIndex);
 
-		if(check !== -1){
-			$('#op'+ blockIndex).find('img').attr('src', hitSrc);
-		} else {
-			$('#op'+ blockIndex).find('img').attr('src', missSrc);
+		if(guessed === -1){
+			myGuess.push(blockIndex);
+
+			if(check !== -1){
+				$('#op'+ blockIndex).find('img').attr('src', hitSrc);
+			} else {
+				$('#op'+ blockIndex).find('img').attr('src', missSrc);
+			}
+
+			pc_guess_easy();
 		}
-
-		pc_guess_easy();
 	});
 
 	/*-------------------------------------
@@ -250,7 +258,6 @@ $(document).ready(function() {
 		var pcY = Math.floor(Math.random()*10);
 		pc_guess = xAxis[pcX] + yAxis[pcY];
 
-		console.log(pc_guess);
 		if_guessed(pc_guess);
 	}
 
@@ -267,10 +274,9 @@ $(document).ready(function() {
 
 	function check_hit(pc_guess){
 		var index = myShip.indexOf(pc_guess);
-		console.log(index);
+
 		if(index == -1){
 			$('#'+ pc_guess).find('img').attr('src', missSrc);
-			console.log('miss');
 		} else {
 			$('#'+ pc_guess).find('img').attr('src', hitSrc);
 		}
