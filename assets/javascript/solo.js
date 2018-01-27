@@ -12,6 +12,8 @@ $(document).ready(function() {
   var myShip =[];
 	var pcShip =[];
 	var myGuess =[];
+	var myWin = 0;
+	var pcWin = 0;
 
 	reset_game();
 	function reset_game(){
@@ -102,7 +104,9 @@ $(document).ready(function() {
 		$('.board .opponent').css('opacity', 1);
 
 		$('.screen.player').show();
-		// console.log(myShip);
+
+		$('#notification').html('[ Your Turn ]');
+		console.log(myShip);
 	});
 
 	/*-------------------------------------
@@ -238,48 +242,294 @@ $(document).ready(function() {
 
 			if(check !== -1){
 				$('#op'+ blockIndex).find('img').attr('src', hitSrc);
+				$('#notification').html('[ Watch Out! ]');
+				myWin++;
+				win_loss();
 			} else {
 				$('#op'+ blockIndex).find('img').attr('src', missSrc);
 			}
 
-			pc_guess_easy();
+			$('#notification').html('[ Your Turn ]');
+			pc_guess();
 		}
 	});
 
 	/*-------------------------------------
-	| computer guess
+	| computer guess easy
 	-------------------------------------*/
 
-	var pc_guessed = [];
-	var pc_guess = '';
+	// var pc_guessed = [];
+	// var pc_guess = '';
+  //
+	// function pc_guess_easy(pcX, pcY){
+	// 	var pcX = Math.floor(Math.random()*10);
+	// 	var pcY = Math.floor(Math.random()*10);
+	// 	pc_guess = xAxis[pcX] + yAxis[pcY];
+  //
+	// 	if_guessed(pc_guess);
+	// }
+  //
+	// function if_guessed(pc_guess){
+	// 	var index = pc_guessed.indexOf(pc_guess);
+	// 	if(index !==-1){
+	// 		pc_guess_easy();
+	// 	} else {
+	// 		pc_guessed.push(pc_guess);
+	// 		check_hit(pc_guess);
+	// 		return
+	// 	}
+	// }
+  //
+	// function check_hit(pc_guess){
+	// 	var index = myShip.indexOf(pc_guess);
+  //
+	// 	if(index == -1){
+	// 		$('#'+ pc_guess).find('img').attr('src', missSrc);
+	// 	} else {
+	// 		$('#'+ pc_guess).find('img').attr('src', hitSrc);
+	// $('#notification').html('[ Watch Out! ]');
+	//		pcWin++;
+	// 		win_loss();
+	// 	}
+	// }
 
-	function pc_guess_easy(pcX, pcY){
-		var pcX = Math.floor(Math.random()*10);
-		var pcY = Math.floor(Math.random()*10);
-		pc_guess = xAxis[pcX] + yAxis[pcY];
+	/*-------------------------------------
+	| computer guessed medium
+	-------------------------------------*/
 
-		if_guessed(pc_guess);
-	}
+	var pcX;
+	var pcY;
+	var pcGuess = '';
+	var pcGuessed = [];
+	var pcHit = 'random';
+	var pcDirection = '';
 
-	function if_guessed(pc_guess){
-		var index = pc_guessed.indexOf(pc_guess);
-		if(index !==-1){
-			pc_guess_easy();
-		} else {
-			pc_guessed.push(pc_guess);
-			check_hit(pc_guess);
-			return
+	function pc_guess(){
+		if(pcHit === 'random'){
+			random_guess();
+		} else if(pcHit === 'around'){
+			check_around();
+		} else if(pcHit === 'next'){
+			check_next();
 		}
 	}
 
-	function check_hit(pc_guess){
-		var index = myShip.indexOf(pc_guess);
+	/*-------------------------------------
+	| random guess
+	-------------------------------------*/
 
-		if(index == -1){
-			$('#'+ pc_guess).find('img').attr('src', missSrc);
-		} else {
-			$('#'+ pc_guess).find('img').attr('src', hitSrc);
+	function random_guess(){
+
+		generate_guess();
+		function generate_guess(){
+			pcX = Math.floor(Math.random()*10);
+			pcY = Math.floor(Math.random()*10);
+			pcGuess = xAxis[pcX] + yAxis[pcY];
+			check_repeat(pcGuess);
+		}
+
+		function check_repeat(pcGuess){
+			var guessed = pcGuessed.indexOf(pcGuess);
+
+			if(guessed !== -1){
+				generate_guess();
+			} else {
+				pcGuessed.push(pcGuess);
+				console.log(pcGuessed);
+				hit_miss(pcGuess);
+			}
+		}
+
+		function hit_miss(pcGuess){
+			console.log('random check');
+			var index = myShip.indexOf(pcGuess);
+
+			if(index === -1){
+				pcHit = 'random';
+				$('#'+ pcGuess).find('img').attr('src', missSrc);
+			} else {
+				pcHit = 'around';
+				$('#'+ pcGuess).find('img').attr('src', hitSrc);
+				$('#notification').html('[ Watch Out! ]');
+				pcWin++;
+				win_loss();
+			}
 		}
 	}
+
+	/*-------------------------------------
+	| check around
+	-------------------------------------*/
+
+	function check_around(){
+		var turn = 0;
+
+		generate_guess();
+		function generate_guess(){
+			if(turn !== 4){
+				turn++;
+				var d;
+				var dCheck;
+
+				generate_index();
+				function generate_index(){
+					d = Math.floor(Math.random()*4);
+					check_index(d);
+				}
+
+				function check_index(){
+					if(d === dCheck){
+						generate_index();
+					} else {
+						get_coordinate(d);
+					}
+				}
+
+				function get_coordinate(d){
+					if(d===0){
+						pcX = pcX +1;
+						pcY = pcY;
+						pcDirection = 'right';
+					} else if(d===1){
+						pcX = pcX;
+						pcY = pcY +1;
+						pcDirection = 'down';
+					} else if(d===2){
+						pcX = pcX -1;
+						pcY = pcY;
+						pcDirection = 'left';
+					} else {
+						pcX = pcX;
+						pcY = pcY -1;
+						pcDirection = 'up';
+					}
+
+					check_exceed(pcX, pcY);
+					return
+				}
+				} else {
+					pcHit = 'random';
+					random_guess();
+				}
+		}
+
+		function check_exceed(pcX, pcY){
+			if(pcX<0 || pcX>9 || pcY<0 || pcY>9){
+				generate_guess();
+			} else {
+				pcGuess = xAxis[pcX] + yAxis[pcY];
+				check_repeat(pcGuess);
+			}
+		}
+
+		function check_repeat(pcGuess){
+			var guessed = pcGuessed.indexOf(pcGuess);
+
+			if(guessed !== -1){
+				generate_guess();
+			} else {
+				pcGuessed.push(pcGuess);
+				hit_miss(pcGuess);
+			}
+		}
+
+		function hit_miss(){
+			console.log('around check');
+			var index = myShip.indexOf(pcGuess);
+
+			if(index === -1){
+				pcHit = 'around';
+				$('#'+ pcGuess).find('img').attr('src', missSrc);
+			} else {
+				pcHit = 'next';
+				$('#'+ pcGuess).find('img').attr('src', hitSrc);
+				$('#notification').html('[ Watch Out! ]');
+				pcWin++;
+				win_loss();
+			}
+		}
+
+	}
+
+	/*-------------------------------------
+	| title
+	-------------------------------------*/
+
+	function check_next(){
+
+		generate_guess();
+		function generate_guess(){
+
+			if(pcDirection === 'right'){
+				pcX = pcX +1;
+				pcY = pcY;
+			} else if(pcDirection === 'down'){
+				pcX = pcX;
+				pcY = pcY +1;
+			} else if(pcDirection === 'left'){
+				pcX = pcX -1;
+				pcY = pcY;
+			} else if(pcDirection === 'up'){
+				pcX = pcX;
+				pcY = pcY -1;
+			}
+			check_exceed(pcX, pcY);
+		}
+
+		function check_exceed(pcX, pcY){
+			if(pcX<0 || pcX>9 || pcY<0 || pcY>9){
+				random_guess();
+				return
+			} else {
+				pcGuess = xAxis[pcX] + yAxis[pcY];
+				check_repeat(pcGuess);
+			}
+		}
+
+		function check_repeat(pcGuess){
+			var guessed = pcGuessed.indexOf(pcGuess);
+
+			if(guessed !== -1){
+				random_guess();
+				return
+			} else {
+				pcGuessed.push(pcGuess);
+				hit_miss(pcGuess);
+			}
+		}
+
+		function hit_miss(){
+			console.log('next check');
+			var index = myShip.indexOf(pcGuess);
+
+			if(index === -1){
+				pcHit = 'random';
+				$('#'+ pcGuess).find('img').attr('src', missSrc);
+			} else {
+				pcHit = 'next';
+				$('#'+ pcGuess).find('img').attr('src', hitSrc);
+				$('#notification').html('[ Watch Out! ]');
+				pcWin++;
+				win_loss();
+			}
+		}
+
+	}
+
+/*-------------------------------------
+| win loss
+-------------------------------------*/
+
+function win_loss(){
+	if(myWin === 17){
+		$('.screen.opponent').show();
+		$('#notification').html('[ You Win! ]');
+
+	} else if (pcWin === 17){
+		$('.screen.opponent').show();
+		$('#notification').html('[ Game Over ]');
+
+	}
+}
 
 });
