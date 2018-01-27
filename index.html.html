@@ -1,0 +1,103 @@
+
+<!DOCTYPE HTML>
+
+<head>
+    <title>Battleship!</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/gif" href="./assets/images/favicon.jpg">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <style>
+      #invite { color: #FF3200; text-decoration: none;}
+      #invite:hover { text-decoration: underline;}
+    </style>
+</head>
+
+<body>
+
+	<!-- title and logout ------------>
+
+	<div id="title">
+		<div class="main">
+
+			<h1 id="battleship">BATTLESHIP</h1>
+			<h2 id="notification">[ Place your ships and press start! ]</h2>
+		</div>
+		<div class="user">
+			<div>
+				<a class="navigation">How to Play</a>
+			</div>
+			<div>
+				<a class="navigation">About</a> <p style="display:inline-block"> | </p>
+				<a class="navigation hideLogout" id="signOut"> Log Out</a>
+			</div>
+
+			<!-- <p class="currentUser">Welcome: <span id="user-email"></span></p> -->
+			<!-- <button class="btn btn-danger hideLogout" id="signOut">Log Out</button> -->
+		</div>
+
+	</div>
+
+	<!-- game ------------>
+
+	<div id="game" class="game">
+		<div class="board">
+			<div class="player"><img class="grid-bg" src="./assets/images/grid.png"></div>
+			<div class="opponent"><img class="grid-bg" src="./assets/images/grid.png"></div>
+		</div>
+
+		<div class="ships">
+			<div id="ship1" class="ship" rotate="false" size="63px"></div>
+			<div id="ship2" class="ship" rotate="false" size="98px"></div>
+			<div id="ship3" class="ship" rotate="false" size="98px"></div>
+			<div id="ship4" class="ship" rotate="false" size="137px"></div>
+			<div id="ship5" class="ship" rotate="false" size="170px"></div>
+		</div>
+
+		<div class="screen player"></div>
+		<div class="screen opponent"></div>
+	</div>
+
+	<!-- player info ------------>
+
+	<div id="info">
+		<div class="user-info">
+			<div>
+				<p id="user-email" class="currentUser">Welcome!</p>
+			</div>
+			<div>
+				<button id="start" type="button" name="button">[ Start! ]</button>
+			</div>
+		</div>
+		<div class="op-info">
+			<div>
+				<p id="op-email" class="currentUser">PC - <a id="invite" href="https://e30devo.github.io/Battleship/">Play with a Friend</a></p>
+			</div>
+		</div>
+	</div>
+
+  <div id="footer" style="margin-top:100px;">
+    <p>2018 Copyright</p>
+  </div>
+
+
+  <!-- jquery and jquery.ui CDN -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+  <!-- External js files. -->
+  <script src="./assets/javascript/solo.js"></script>
+
+  <!--Bootstrap 4.0-->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+  crossorigin="anonymous"></script>
+
+</body>
+
+</html>

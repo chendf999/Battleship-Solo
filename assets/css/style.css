@@ -1,0 +1,224 @@
+
+@import url('https://fonts.googleapis.com/css?family=Saira+Condensed:500|Saira+Semi+Condensed:300,500');
+
+body {
+	line-height: 0px;
+	font-family: 'Saira Semi Condensed', sans-serif;
+	background: linear-gradient(to bottom left, #18282D, #111C21);
+	width: 770px;
+	margin: 0 auto;
+	cursor: url(../images/cursor.png), auto;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+h1 {
+	font-family: 'Saira Condensed', sans-serif;
+	font-size: 80px;
+	font-weight: 500;
+}
+
+h2 {
+	font-size: 26px;
+	font-weight: 500;
+	color: #BCE0E4;
+}
+
+h3 {
+	font-size: 18px;
+	font-weight: 500;
+	color: #BCE0E4;
+}
+
+p {
+	font-size: 18px;
+	font-weight: 300;
+	color: #BCE0E4;
+}
+
+.main { text-align: center; }
+
+#battleship { margin: 0 auto; margin-top: 60px; color: #538393;}
+#notification { margin: 0 auto; margin-top: 70px; }
+
+.user {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 2px;
+}
+
+#title .user a {
+	font-size: 18px;
+	font-size: 300;
+	color: #BCE0E4;
+}
+
+#title .user a:hover { color: #FF3200;}
+
+
+/*-------------------------------------
+| gameboard
+-------------------------------------*/
+
+/* contains two boards and all ships -------------------------------*/
+.game {
+	position: relative;
+	/* border: solid 1px red; */
+	width: 770px; height: 360px;
+	margin: 10px auto;
+}
+
+.board {
+	display: flex;
+	justify-content: space-between;
+	width: 770px; height: 360px;
+	margin-top: 40px;
+}
+
+.player, .opponent, .screen {
+	width: 360px; height: 360px;
+	line-height: 0;
+	position: relative;
+}
+
+/* background image -------------------------------*/
+.grid-bg {
+	position: absolute;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	opacity: .75;
+}
+
+.screen.player{
+	position: absolute;
+	top: 0;	left: 0;
+	z-index: 20;
+}
+.screen.opponent {
+	/* border: solid 1px red; */
+	position: absolute;
+	top: 0;	right: 0;
+	z-index: 20;
+	/* display: none; */
+}
+
+.block {
+	display: inline-block;
+	width: 36px; height: 36px;
+	position: relative; top:1px; left: 1px; /* NOTE: adjust with bg image */
+	margin: 0;
+}
+
+.board .opponent .block:hover {
+	-moz-box-shadow:    inset 0 0 10px 0 rgba(188,224,228,50);
+	-webkit-box-shadow: inset 0 0 10px 0 rgba(188,224,228,50);
+	box-shadow:         inset 0 0 10px 0 rgba(188,224,228,50);
+}
+
+.block img { width: 100%; height: 100%; position: absolute;}
+
+.snap {
+	width: 28px; height: 28px;
+	position: absolute;
+	top: 3px; left: 3px;
+	/* border: solid 1px green; */
+}
+
+/*-------------------------------------
+| ship
+-------------------------------------*/
+
+.ship {
+	position: absolute;
+	left: 4px;
+	z-index: 10; /* on top of grid -------------------------------*/
+	border: solid 2px #538393;
+	border-radius: 15px;
+}
+
+.ship:hover {
+	box-shadow: 0 0 10px 0 rgba(188,224,228,50);
+}
+
+.rotate { transform: rotate(90deg);}
+
+#ship1 { width: 64px; height: 28px; top: 5px;}
+#ship2 { width: 100px; height: 28px; top: 41px;}
+#ship3 { width: 100px; height: 28px; top: 77px;}
+#ship4 { width: 136px; height: 28px; top: 113px;}
+#ship5 { width: 172px; height: 28px; top: 149px;}
+
+/*-------------------------------------
+| title
+-------------------------------------*/
+
+#info {
+	display: flex;
+	justify-content: space-between;
+}
+
+#info p { color: #538393; line-height: 24px;}
+
+#start {
+	background: none;
+	border: none;
+	font-size: 18px;
+	font-weight: 500;
+	color: #BCE0E4;
+	line-height: 24px;
+}
+
+#start:hover {
+	color: #FF3200;
+	cursor: url(../images/cursor.png), auto;
+}
+
+.user-info, .op-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	width: 360px;
+}
+
+#ranking {
+	width: 100%;
+	border: solid 1px #BCE0E4;
+	border-radius: 5px;
+	background-color: #223035;
+	margin-top: 40px;
+	margin-bottom: 100px;
+	font-size: 18px;
+	font-weight: 300;
+}
+.playerRankingTable {
+	color: #BCE0E4;
+	width: 770px;
+	background-color: none;
+}
+table, .table { width: 770px; }
+
+.table {
+	display: flex;
+	justify-content: center;
+	overflow: scroll;
+}
+
+.table thead th {
+	border-bottom: solid 1px #BCE0E4;
+	color: #BCE0E4;
+	font-weight: 500;
+	border-top: 0;
+	padding: 1.1em;
+}
+
+.table td{
+	padding: 1em;
+	color: #538393;
+}
+
+#footer {
+	text-align: center;
+	height: 50px;
+}

@@ -1,0 +1,46 @@
+
+.hideLogout {
+	visibility: hidden;
+}
+
+.showLogout {
+	visibility: visible;
+}
+
+.modal-content {
+	margin-top: 115px;
+	border: solid 1px #BCE0E4;
+	border-radius: 5px;
+	background-color: #223035;
+	font-size: 18px;
+	font-weight: 500;
+}
+
+.modal-footer {
+	justify-content: space-between;
+}
+
+#email, #password, #emailA, #emailB, #passwordA, #passwordB {
+	height: 28px;
+	width: 100%;
+	padding: 5px;
+	margin-bottom: 8px;
+
+	background-color: #17272D;
+	border: none;
+	color: #BCE0E4;
+	font-weight: 300;
+}
+
+.modal-title {
+	font-weight: 500;
+	line-height: 24px;
+	color: #BCE0E4;
+	padding: 0;
+}
+
+.prompt {
+	margin: 5px;
+	top: 10px;
+	font-weight: bold;
+}
