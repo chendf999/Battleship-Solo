@@ -2,8 +2,8 @@ $(document).ready(function() {
 
 	var shipId;
 
-	var yAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-	var xAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+	var xAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+	var yAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 
 	var playerGrid = xAxis.length * yAxis.length;
 
@@ -99,7 +99,7 @@ $(document).ready(function() {
 			}
 		}
 
-		if(myShip.length < 18){
+		if(myShip.length !== 17){
 			$('#notification').html('[ Oops...check your ship location. ]');
 			myShip = [];
 		} else {
@@ -245,7 +245,7 @@ $(document).ready(function() {
 
 			if(check !== -1){
 				$('#op'+ blockIndex).find('img').attr('src', hitSrc);
-				$('#notification').html('[ Watch Out! ]');
+				check_sink();
 				myWin++;
 
 			} else {
