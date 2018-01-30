@@ -144,11 +144,11 @@ p {
 
 .rotate { transform: rotate(90deg);}
 
-#ship1 { width: 64px; height: 28px; top: 5px;}
+#ship1 { width: 64px; height: 28px; top: 4px;}
 #ship2 { width: 100px; height: 28px; top: 41px;}
 #ship3 { width: 100px; height: 28px; top: 77px;}
-#ship4 { width: 136px; height: 28px; top: 113px;}
-#ship5 { width: 172px; height: 28px; top: 149px;}
+#ship4 { width: 136px; height: 28px; top: 112px;}
+#ship5 { width: 172px; height: 28px; top: 148px;}
 
 /*-------------------------------------
 | title

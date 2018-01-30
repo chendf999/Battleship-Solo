@@ -2,8 +2,8 @@ $(document).ready(function() {
 
 	var shipId;
 
-	var xAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-	var yAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+	var yAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+	var xAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 
 	var playerGrid = xAxis.length * yAxis.length;
 
@@ -99,14 +99,17 @@ $(document).ready(function() {
 			}
 		}
 
-		$('.screen.opponent').hide();
-		$('.board .player').css('opacity', .5);
-		$('.board .opponent').css('opacity', 1);
+		if(myShip.length < 18){
+			$('#notification').html('[ Oops...check your ship location. ]');
+			myShip = [];
+		} else {
+			$('.screen.opponent').hide();
+			$('.board .player').css('opacity', .5);
+			$('.board .opponent').css('opacity', 1);
 
-		$('.screen.player').show();
-
-		$('#notification').html('[ Your Turn ]');
-
+			$('.screen.player').show();
+			$('#notification').html('[ Your Turn ]');
+		}
 	});
 
 	/*-------------------------------------
@@ -303,23 +306,33 @@ $(document).ready(function() {
 	var pcGuess = '';
 	var pcGuessed = [];
 	var pcHit = 'random';
-	var pcDirection = '';
+	var pcDirection = 'right';
+	var stepBack = 2;
 
 	function pc_guess(){
-		if(pcHit === 'random'){
-			random_guess();
-		} else if(pcHit === 'around'){
-			check_around();
-		} else if(pcHit === 'next'){
-			check_next();
+
+		if(pcWin < 15){
+			if(pcHit === 'random'){
+				random_check();
+			} else if(pcHit === 'around'){
+				check_around();
+			} else if(pcHit === 'next') {
+				check_next();
+			} else if(pcHit === 'back'){
+				check_back();
+			}
+		} else {
+			final_check();
 		}
+
+		console.log(pcHit, pcDirection, stepBack);
 	}
 
 	/*-------------------------------------
 	| random guess
 	-------------------------------------*/
 
-	function random_guess(){
+	function random_check(){
 
 		generate_guess();
 		function generate_guess(){
@@ -342,180 +355,260 @@ $(document).ready(function() {
 		}
 
 		function hit_miss(pcGuess){
+				var index = myShip.indexOf(pcGuess);
 
-			var index = myShip.indexOf(pcGuess);
-
-			if(index === -1){
-				pcHit = 'random';
-				$('#'+ pcGuess).find('img').attr('src', missSrc);
-			} else {
-				pcHit = 'around';
-				$('#'+ pcGuess).find('img').attr('src', hitSrc);
-				$('#notification').html('[ Watch Out! ]');
-				pcWin++;
-				win_loss();
+				if(index === -1){
+					pcHit = 'random';
+					$('#'+ pcGuess).find('img').attr('src', missSrc);
+				} else {
+					pcHit = 'around';
+					$('#'+ pcGuess).find('img').attr('src', hitSrc);
+					pcWin++;
+					win_loss();
+				}
 			}
 		}
-	}
 
 	/*-------------------------------------
 	| check around
 	-------------------------------------*/
 
 	function check_around(){
-		var turn = 0;
+		get_coordinate();
 
-		generate_guess();
-		function generate_guess(){
-			if(turn !== 4){
-				turn++;
-				var d;
-				var dCheck;
-
-				generate_index();
-				function generate_index(){
-					d = Math.floor(Math.random()*4);
-					check_index(d);
+		function get_coordinate(){
+			if(pcDirection === 'right'){
+				if(yAxis[pcY+1] !== undefined && pcGuessed.indexOf(xAxis+yAxis[pcY+1]) === -1){
+					pcY = pcY+1;
+					hit_miss();
+				} else{
+					change_direction();
 				}
-
-				function check_index(){
-					if(d === dCheck){
-						generate_index();
-					} else {
-						get_coordinate(d);
-					}
+			} else if(pcDirection === 'down'){
+				if(xAxis[pcX+1] !== undefined && pcGuessed.indexOf(xAxis[pcX+1]+yAxis[pcY]) === -1){
+					pcX = pcX+1;
+					hit_miss();
+				} else{
+					change_direction();
 				}
-
-				function get_coordinate(d){
-					if(d===0){
-						pcX = pcX +1;
-						pcY = pcY;
-						pcDirection = 'right';
-					} else if(d===1){
-						pcX = pcX;
-						pcY = pcY +1;
-						pcDirection = 'down';
-					} else if(d===2){
-						pcX = pcX -1;
-						pcY = pcY;
-						pcDirection = 'left';
-					} else {
-						pcX = pcX;
-						pcY = pcY -1;
-						pcDirection = 'up';
-					}
-
-					check_exceed(pcX, pcY);
-					return
+			} else if(pcDirection === 'left'){
+				if(yAxis[pcY-1] !== undefined && pcGuessed.indexOf(xAxis+yAxis[pcY-1]) === -1){
+					pcY = pcY-1;
+					hit_miss();
+				} else{
+					change_direction();
 				}
-				} else {
-					pcHit = 'random';
-					random_guess();
+			} else if(pcDirection === 'up'){
+				if(xAxis[pcX-1] !== undefined && pcGuessed.indexOf(xAxis[pcX-1]+yAxis[pcY]) === -1){
+					pcX = pcX -1;
+					hit_miss();
+				} else{
+					change_direction();
 				}
-		}
-
-		function check_exceed(pcX, pcY){
-			if(pcX<0 || pcX>9 || pcY<0 || pcY>9){
-				generate_guess();
 			} else {
-				pcGuess = xAxis[pcX] + yAxis[pcY];
-				check_repeat(pcGuess);
+				pcDirection = 'right';
+				random_check();
 			}
 		}
 
-		function check_repeat(pcGuess){
-			var guessed = pcGuessed.indexOf(pcGuess);
-
-			if(guessed !== -1){
-				generate_guess();
-			} else {
-				pcGuessed.push(pcGuess);
-				hit_miss(pcGuess);
+		function change_direction(){
+			if(pcDirection === 'right'){
+				pcDirection = 'down';
+				get_coordinate();
+			} else if (pcDirection === 'down') {
+				pcDirection = 'left';
+				get_coordinate();
+			} else if (pcDirection === 'left') {
+				pcDirection = 'up';
+				get_coordinate();
+			} else if (pcDirection === 'up') {
+				pcDirection = 'right';
+				get_coordinate();
 			}
 		}
 
 		function hit_miss(){
-
+			pcGuess = xAxis[pcX]+yAxis[pcY];
+			pcGuessed.push(pcGuess);
 			var index = myShip.indexOf(pcGuess);
 
 			if(index === -1){
 				pcHit = 'around';
 				$('#'+ pcGuess).find('img').attr('src', missSrc);
+
+				// reset coordinates back, set direction for next round
+				if(pcDirection === 'right'){
+					pcY = pcY-1;
+					pcDirection = 'down';
+				} else if(pcDirection === 'down'){
+					pcX = pcX-1;
+					pcDirection = 'left';
+				} else if(pcDirection === 'left'){
+					pcY = pcY+1;
+				} else if(pcDirection === 'up'){
+					pcX = pcX +1;
+					pcDirection = 'right';
+				}
+
 			} else {
 				pcHit = 'next';
 				$('#'+ pcGuess).find('img').attr('src', hitSrc);
-				$('#notification').html('[ Watch Out! ]');
 				pcWin++;
 				win_loss();
 			}
 		}
-
 	}
 
-	/*-------------------------------------
-	| title
-	-------------------------------------*/
+/*-------------------------------------
+| check next
+-------------------------------------*/
 
-	function check_next(){
+function check_next(){
+	stepBack++;
 
-		generate_guess();
-		function generate_guess(){
+	if(pcDirection === 'right'){ // continue right
+		if(yAxis[pcY+1] !==undefined && pcGuessed.indexOf(xAxis[pcX]+yAxis[pcY+1]) === -1){
+			pcY = pcY +1;
+			hit_miss();
+		} else {
+			pcDirection = 'left';
+			check_back();
+		}
+	} else if(pcDirection === 'down'){ // continue down
+		if(xAxis[pcX+1] !==undefined && pcGuessed.indexOf(xAxis[pcX+1]+yAxis[pcY]) === -1){
+			pcX = pcX +1;
+			hit_miss();
+		} else {
+			pcDirection = 'up';
+			check_back();
+		}
+	} else if(pcDirection === 'left'){ // continue left
+		if(yAxis[pcY-1] !==undefined && pcGuessed.indexOf(xAxis[pcX]+yAxis[pcY-1]) === -1){
+			pcY = pcY -1;
+			hit_miss();
+		} else {
+			pcDirection = 'right';
+			check_back();
+		}
+	} else if(pcDirection === 'up'){ // continue up
+		if(xAxis[pcX-1] !==undefined && pcGuessed.indexOf(xAxis[pcX-1]+yAxis[pcY]) === -1){
+			pcX = pcX -1;
+			hit_miss();
+		} else {
+			pcDirection = 'down';
+			check_back();
+		}
+	}
 
+	function hit_miss(){
+		pcGuess = xAxis[pcX]+yAxis[pcY];
+		pcGuessed.push(pcGuess);
+		var index = myShip.indexOf(pcGuess);
+
+		if(index === -1){
+			pcHit = 'back';
+			$('#'+ pcGuess).find('img').attr('src', missSrc);
+
+			// reset direction for next round
 			if(pcDirection === 'right'){
-				pcX = pcX +1;
-				pcY = pcY;
+				pcDirection = 'left';
 			} else if(pcDirection === 'down'){
-				pcX = pcX;
-				pcY = pcY +1;
+				pcDirection = 'up';
 			} else if(pcDirection === 'left'){
-				pcX = pcX -1;
-				pcY = pcY;
+				pcDirection = 'right';
 			} else if(pcDirection === 'up'){
-				pcX = pcX;
-				pcY = pcY -1;
+				pcDirection = 'down';
 			}
-			check_exceed(pcX, pcY);
+		} else {
+			pcHit = 'next';
+			$('#'+ pcGuess).find('img').attr('src', hitSrc);
+			pcWin++;
+			win_loss();
 		}
-
-		function check_exceed(pcX, pcY){
-			if(pcX<0 || pcX>9 || pcY<0 || pcY>9){
-				random_guess();
-				return
-			} else {
-				pcGuess = xAxis[pcX] + yAxis[pcY];
-				check_repeat(pcGuess);
-			}
-		}
-
-		function check_repeat(pcGuess){
-			var guessed = pcGuessed.indexOf(pcGuess);
-
-			if(guessed !== -1){
-				random_guess();
-				return
-			} else {
-				pcGuessed.push(pcGuess);
-				hit_miss(pcGuess);
-			}
-		}
-
-		function hit_miss(){
-
-			var index = myShip.indexOf(pcGuess);
-
-			if(index === -1){
-				pcHit = 'random';
-				$('#'+ pcGuess).find('img').attr('src', missSrc);
-			} else {
-				pcHit = 'next';
-				$('#'+ pcGuess).find('img').attr('src', hitSrc);
-				$('#notification').html('[ Watch Out! ]');
-				pcWin++;
-				win_loss();
-			}
-		}
-
 	}
+}
+
+/*-------------------------------------
+| check back
+-------------------------------------*/
+
+function check_back(){
+	if(pcDirection === 'right'){ // continue right
+		if(yAxis[pcY+stepBack] !==undefined && pcGuessed.indexOf(xAxis[pcX]+yAxis[pcY+stepBack]) === -1){
+			pcY = pcY +stepBack;
+			hit_miss();
+		} else {
+			pcDirection = 'right';
+			stepBack = 2;
+			random_check();
+		}
+	} else if(pcDirection === 'down'){ // continue down
+		if(xAxis[pcX+stepBack] !==undefined && pcGuessed.indexOf(xAxis[pcX+stepBack]+yAxis[pcY]) === -1){
+			pcX = pcX +stepBack;
+			hit_miss();
+		} else {
+			pcDirection = 'right';
+			stepBack = 2;
+			random_check();
+		}
+	} else if(pcDirection === 'left'){ // continue left
+		if(yAxis[pcY-stepBack] !==undefined && pcGuessed.indexOf(xAxis[pcX]+yAxis[pcY-stepBack]) === -1){
+			pcY = pcY -stepBack;
+			hit_miss();
+		} else {
+			pcDirection = 'right';
+			stepBack = 2;
+			random_check();
+		}
+	} else if(pcDirection === 'up'){ // continue up
+		if(xAxis[pcX-stepBack] !==undefined && pcGuessed.indexOf(xAxis[pcX-stepBack]+yAxis[pcY]) === -1){
+			pcX = pcX -stepBack;
+			hit_miss();
+		} else {
+			pcDirection = 'right';
+			stepBack = 2;
+			random_check();
+		}
+	}
+
+	function hit_miss(){
+		pcGuess = xAxis[pcX]+yAxis[pcY];
+		pcGuessed.push(pcGuess);
+		var index = myShip.indexOf(pcGuess);
+
+		if(index === -1){
+			pcHit = 'random';
+			pcDirection = 'right';
+			stepBack = 2;
+
+			$('#'+ pcGuess).find('img').attr('src', missSrc);
+		} else {
+			pcHit = 'next';
+			$('#'+ pcGuess).find('img').attr('src', hitSrc);
+			pcWin++;
+			win_loss();
+		}
+	}
+}
+
+/*-------------------------------------
+| final cheat
+-------------------------------------*/
+
+function final_check(){
+	for(var i=0; i<myShip.length; i++){
+		var index = pcGuessed.indexOf(myShip[i]);
+		if(index ===-1){
+			pcGuess = myShip[i];
+			pcGuessed.push(pcGuess);
+			pcWin++;
+
+			$('#'+ pcGuess).find('img').attr('src', hitSrc);
+			win_loss();
+			break
+		}
+	}
+}
 
 /*-------------------------------------
 | win loss
