@@ -7,8 +7,6 @@ $(document).ready(function() {
 
 	var playerGrid = xAxis.length * yAxis.length;
 
-	// var database = firebase.database();
-
   var myShip =[];
 	var pcShip =[];
 	var myGuess =[];
@@ -22,6 +20,7 @@ $(document).ready(function() {
 		$('.screen.player').hide();
 		$('.screen.opponent').show();
 
+		$('.pcShip').hide();
 		$('.board .player').css('opacity', 1);
 		$('.board .opponent').css('opacity', .5);
 
@@ -148,15 +147,16 @@ $(document).ready(function() {
 	-------------------------------------*/
 
 	function pc_setup(){
-		generate_ship(2);
-		generate_ship(3);
-		generate_ship(3);
-		generate_ship(4);
-		generate_ship(5);
+		generate_ship(2,'pcShip1');
+		generate_ship(3,'pcShip2');
+		generate_ship(3,'pcShip3');
+		generate_ship(4,'pcShip4');
+		generate_ship(5,'pcShip5');
 		check_repeat();
+		console.log(pcShip);
 	}
 
-	function generate_ship(ship_length){
+	function generate_ship(ship_length, shipId){
 		var ship_head = '';
 		var headX;
 		var headY;
@@ -169,13 +169,17 @@ $(document).ready(function() {
 				ship_head = xAxis[headX] + yAxis[headY];
 				// console.log(ship_head);
 
+				var top = headX*36+4;
+				var left = headY*36+414;
+
+				$('#'+shipId).css('top',top).css('left', left);
 				head_to();
 		}
 
 		function head_to(){
 			var d = Math.floor(Math.random()*2);
 
-			/* horizontal -------------------------------*/
+			/* vertical -------------------------------*/
 			if(d ===0){
 				var tailX = headX + ship_length;
 
@@ -187,10 +191,13 @@ $(document).ready(function() {
 						var bodyY = headY;
 						var ship_body = xAxis[bodyX] + yAxis[bodyY];
 						this_ship.push(ship_body);
+
+						var size = $('#'+shipId).attr('size');
+						$('#'+shipId).css('width','28px').css('height', size);
 					}
 				}
 			}
-			/* else d ===1, vertical -------------------------------*/
+			/* else d ===1, horizontal -------------------------------*/
 			else {
 				var tailY = headY + ship_length;
 
@@ -202,6 +209,9 @@ $(document).ready(function() {
 						var bodyX = headX;
 						var ship_body = xAxis[bodyX] + yAxis[bodyY];
 						this_ship.push(ship_body);
+
+						var size = $('#'+shipId).attr('size');
+						$('#'+shipId).css('width', size).css('height', '28px');
 					}
 				}
 			}
@@ -245,18 +255,51 @@ $(document).ready(function() {
 
 			if(check !== -1){
 				$('#op'+ blockIndex).find('img').attr('src', hitSrc);
-				check_sink();
 				myWin++;
-
+				check_sink(blockIndex);
+				win_loss();
 			} else {
 				$('#op'+ blockIndex).find('img').attr('src', missSrc);
+				$('#notification').html('[ Your Turn ]');
 			}
-
-			$('#notification').html('[ Your Turn ]');
-			win_loss();
-			pc_guess();
 		}
+
+		pc_guess();
 	});
+
+	/*-------------------------------------
+	| show pc ships
+	-------------------------------------*/
+
+	var pcShip1 = 2;
+	var pcShip2 = 3;
+	var pcShip3 = 3;
+	var pcShip4 = 4;
+	var pcShip5 = 5;
+
+	check_sink();
+	function check_sink(blockIndex){
+		var hit = pcShip.indexOf(blockIndex);
+
+		if(-1< hit && hit<2){ /* 0,1---------*/
+			pcShip1--;
+		} else if (1< hit && hit<5){ /* 2,3,4---------*/
+			pcShip2--;
+		} else if (4< hit && hit<8){ /* 5,6,7---------*/
+			pcShip3--;
+		} else if (7< hit && hit<12){ /* 8,9,10,11---------*/
+			pcShip4--;
+		} else if (11< hit && hit<17){ /* 12,13,14,15,16---------*/
+			pcShip5--;
+		}
+
+		if(pcShip1 === 0){ $('#pcShip1').show().animate({'opacity':.5},1000);}
+		if(pcShip2 === 0){ $('#pcShip2').show().animate({'opacity':.5},1000);}
+		if(pcShip3 === 0){ $('#pcShip3').show().animate({'opacity':.5},1000);}
+		if(pcShip4 === 0){ $('#pcShip4').show().animate({'opacity':.5},1000);}
+		if(pcShip5 === 0){ $('#pcShip5').show().animate({'opacity':.5},1000);}
+
+	}
 
 	/*-------------------------------------
 	| computer guess easy
@@ -625,5 +668,37 @@ function win_loss(){
 
 	}
 }
+
+/*-------------------------------------
+| show info
+-------------------------------------*/
+
+$('#lightbox-intro').hide().css('opacity',0);
+
+$('.how-to').on('click', function(){
+	$('#lightbox-intro').show();
+	$('#lightbox-intro').animate({'opacity':1},800);
+	$('body').css('overflow-y','hidden');
+});
+
+$('#lightbox-intro .close-btn').on('click', function(){
+	$('#lightbox-intro').animate({'opacity':0},800);
+	setTimeout(function(){$('#lightbox-intro').hide();}, 800);
+	$('body').css('overflow-y','scroll');
+});
+
+$('#lightbox-about').hide().css('opacity',0);
+
+$('.about').on('click', function(){
+	$('#lightbox-about').show();
+	$('#lightbox-about').animate({'opacity':1},800);
+	$('body').css('overflow-y','hidden');
+});
+
+$('#lightbox-about .close-btn').on('click', function(){
+	$('#lightbox-about').animate({'opacity':0},800);
+	setTimeout(function(){$('#lightbox-about').hide();}, 800);
+	$('body').css('overflow-y','scroll');
+});
 
 });

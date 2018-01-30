@@ -11,15 +11,12 @@
         crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
-    <style>
-      #invite { color: #FF3200; text-decoration: none;}
-      #invite:hover { text-decoration: underline;}
-    </style>
+	<link rel="stylesheet" type="text/css" href="./assets/css/additional.css">
 </head>
 
 <body>
 
-	<!-- title and logout ------------>
+	<!-- title ------------>
 
 	<div id="title">
 		<div class="main">
@@ -29,16 +26,12 @@
 		</div>
 		<div class="user">
 			<div>
-				<a class="navigation">How to Play</a>
+				<a class="navigation how-to">How to Play</a>
 			</div>
 			<div>
-				<a class="navigation">About</a> <p style="display:inline-block"></p>
+				<a class="navigation about">About</a> <p style="display:inline-block"></p>
 			</div>
-
-			<!-- <p class="currentUser">Welcome: <span id="user-email"></span></p> -->
-			<!-- <button class="btn btn-danger hideLogout" id="signOut">Log Out</button> -->
 		</div>
-
 	</div>
 
 	<!-- game ------------>
@@ -55,6 +48,12 @@
 			<div id="ship3" class="ship" rotate="false" size="98px"></div>
 			<div id="ship4" class="ship" rotate="false" size="137px"></div>
 			<div id="ship5" class="ship" rotate="false" size="170px"></div>
+
+      <div id="pcShip1" class="pcShip" size="63px"></div>
+			<div id="pcShip2" class="pcShip" size="98px"></div>
+			<div id="pcShip3" class="pcShip" size="98px"></div>
+			<div id="pcShip4" class="pcShip" size="137px"></div>
+			<div id="pcShip5" class="pcShip" size="170px"></div>
 		</div>
 
 		<div class="screen player"></div>
@@ -80,9 +79,36 @@
 	</div>
 
   <div id="footer" style="margin-top:100px;">
-    <p>2018 Copyright</p>
+    <p>2018 © Daphne Chen | <a href="http://chendf.com" target="_blank">chendf.com</a><br><a href="https://github.com/dc220v/Battleship-Solo" target="_blank">https://github.com/dc220v/Battleship-Solo</a></p>
   </div>
 
+  <div id="lightbox-intro">
+  	<div class="modal-content">
+  		<div class="modal-header">
+  			<h3 class="modal-title">How to Play</h3>
+  			<h3 class="modal-title close-btn">X</h3>
+  		</div>
+  		<div class="modal-body">
+  			<p>Battleship is a classic two player game where players try to sink their opponent’s navy ships. The basic object of the game is to hide your five ship fleet somewhere on your ocean, and find your opponent’s fleet before they find yours.</p>
+  			<p><strong>[ Setting up ]</strong><br>Each player will see two boards. Click and drag your 5 ships. Place them on your ocean on the left. </p>
+  			<p><strong>[ Rotate ship ]</strong><br>You may place your ships horizontally or vertically. Click to rotate the ships.</p>
+  			<p><strong>[ 1,2,3 Fire! ]</strong><br>When you are ready, click "Start" button below your ocean grid. Click your opponent's ocean grid to guess their ship location. You cannot move your ship after game started. </p>
+  			<p><strong>[ Win/ Loss ]</strong><br>Whoever find all opponent ships wins the game.</p>
+  		</div>
+  	</div>
+  </div>
+
+  <div id="lightbox-about">
+  	<div class="modal-content">
+  		<div class="modal-header">
+  			<h3 class="modal-title">About</h3>
+  			<h3 class="modal-title close-btn">X</h3>
+  		</div>
+  		<div class="modal-body">
+  			<p>Battleship is a classic two player game where players try to sink their opponent’s navy ships. The basic object of the game is to hide your five ship fleet somewhere on your ocean, and find your opponent’s fleet before they find yours.</p>
+  		</div>
+  	</div>
+  </div>
 
   <!-- jquery and jquery.ui CDN -->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

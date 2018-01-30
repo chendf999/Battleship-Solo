@@ -8,6 +8,7 @@ body {
 	width: 770px;
 	margin: 0 auto;
 	cursor: url(../images/cursor.png), auto;
+	min-height: 100vh;
 }
 
 ::-webkit-scrollbar {
@@ -145,10 +146,25 @@ p {
 .rotate { transform: rotate(90deg);}
 
 #ship1 { width: 64px; height: 28px; top: 4px;}
-#ship2 { width: 100px; height: 28px; top: 41px;}
-#ship3 { width: 100px; height: 28px; top: 77px;}
+#ship2 { width: 100px; height: 28px; top: 42px;}
+#ship3 { width: 100px; height: 28px; top: 78px;}
 #ship4 { width: 136px; height: 28px; top: 112px;}
 #ship5 { width: 172px; height: 28px; top: 148px;}
+
+.pcShip {
+	position: absolute;
+	left: 414px;
+	border: solid 2px #538393;
+	border-radius: 15px;
+	opacity: .3;
+	/* display: none; */
+}
+
+#pcShip1 { width: 64px; height: 28px; top: 4px;}
+#pcShip2 { width: 100px; height: 28px; top: 41px;}
+#pcShip3 { width: 100px; height: 28px; top: 77px;}
+#pcShip4 { width: 136px; height: 28px; top: 112px;}
+#pcShip5 { width: 172px; height: 28px; top: 148px;}
 
 /*-------------------------------------
 | title

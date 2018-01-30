@@ -1,0 +1,59 @@
+
+#invite { color: #FF3200; text-decoration: none;}
+#invite:hover { text-decoration: underline;}
+
+#footer { height: 100px;}
+#footer p { line-height: 28px; color: #538393;}
+
+#title .user a {color: #538393;}
+
+#footer a { color: #538393;}
+#footer a:hover { color: #FF3200; text-decoration: none;}
+
+#lightbox-intro, #lightbox-about {
+	display: none;
+	background-color: rgba(0,0,0,.75);
+	width: 100%; height: 100%;
+	position: fixed; top: 0; left: 0;
+	z-index: 30;
+}
+
+.close-btn {
+	text-align: center;
+	padding: 0 10px;
+	padding-right: 5px;
+}
+
+.modal-content {
+	width: 60%;
+	margin: 0 auto;
+	margin-top: 120px;
+	border: solid 1px #BCE0E4;
+	border-radius: 5px;
+	background-color: #223035;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 28px;
+	height: 350px;
+}
+
+.modal-content p{
+	color: #538393;
+	margin-bottom: 20px;
+}
+
+.modal-content strong {
+	font-weight: 500;
+}
+
+.modal-header { padding: 20px 15px;}
+.modal-title {
+	margin-top: -8px;
+	font-weight: 500;
+	line-height: 24px;
+	color: #BCE0E4;
+}
+
+.modal-body {
+	overflow-y: scroll;
+}
