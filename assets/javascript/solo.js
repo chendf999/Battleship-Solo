@@ -85,11 +85,9 @@ $(document).ready(function() {
 	-------------------------------------*/
 
 	$('#start').on('click', function(){
-    pc_setup();
 
 		for(var i=1; i< 6; i++){
 			shipId = 'ship'+i;
-
 			for (var j = 0; j < xAxis.length; j++) {
 				for (var k = 0; k < yAxis.length; k++) {
 					var blockId = xAxis[j] + yAxis[k];
@@ -98,10 +96,22 @@ $(document).ready(function() {
 			}
 		}
 
+		for(var j=0; j < myShip.length; j++){
+			for (var k = 0; k < myShip.length; k++) {
+				if(myShip[j] === myShip[k] && j!==k){
+					$('#notification').html('[ Oops...check your ship location. ]');
+					myShip = [];
+					return
+				}
+			}
+		}
+
 		if(myShip.length !== 17){
 			$('#notification').html('[ Oops...check your ship location. ]');
 			myShip = [];
 		} else {
+			pc_setup();
+
 			$('.screen.opponent').hide();
 			$('.board .player').css('opacity', .5);
 			$('.board .opponent').css('opacity', 1);
@@ -262,9 +272,9 @@ $(document).ready(function() {
 				$('#op'+ blockIndex).find('img').attr('src', missSrc);
 				$('#notification').html('[ Your Turn ]');
 			}
-		}
 
 		pc_guess();
+		}
 	});
 
 	/*-------------------------------------
@@ -565,6 +575,7 @@ function check_next(){
 		} else {
 			pcHit = 'next';
 			$('#'+ pcGuess).find('img').attr('src', hitSrc);
+			$('#notification').html('[ Watch Out ]');
 			pcWin++;
 			win_loss();
 		}
@@ -660,11 +671,11 @@ function final_check(){
 function win_loss(){
 	if(myWin === 17){
 		$('.screen.opponent').show();
-		$('#notification').html('[ You Win! ]');
+		$('#notification').html('[ You Win! Refresh to start again. ]');
 
 	} else if (pcWin === 17){
 		$('.screen.opponent').show();
-		$('#notification').html('[ Game Over ]');
+		$('#notification').html('[ Game Over. Refresh to start again. ]');
 
 	}
 }
