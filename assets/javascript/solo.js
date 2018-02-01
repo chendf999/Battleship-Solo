@@ -163,7 +163,7 @@ $(document).ready(function() {
 		generate_ship(4,'pcShip4');
 		generate_ship(5,'pcShip5');
 		check_repeat();
-		console.log(pcShip);
+		// console.log(pcShip);
 	}
 
 	function generate_ship(ship_length, shipId){
@@ -378,7 +378,7 @@ $(document).ready(function() {
 			final_check();
 		}
 
-		console.log(pcHit, pcDirection, stepBack);
+		// console.log(pcHit, pcDirection, stepBack);
 	}
 
 	/*-------------------------------------
