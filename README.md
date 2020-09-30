@@ -1,7 +1,7 @@
 # battleship-solo
 
-Play with PC
-https://dc220v.github.io/Battleship-Solo/
+Solo 
+https://chendf999.github.io/Battleship-Solo/
 
-Challenge a Friend
+Play with a Friend
 https://e30devo.github.io/Battleship/
