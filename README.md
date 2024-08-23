@@ -1,4 +1,6 @@
-# battleship-solo
+# Play Battleship Game
+
+![cover](assets/images/Cover.png)
 
 Solo 
 https://chendf999.github.io/Battleship-Solo/
